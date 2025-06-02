@@ -2,21 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Egg Catcher Classic</title>
-  <link rel="stylesheet" href="style/main.css" />
+  <title>Egg Catch Game</title>
+  <link rel="stylesheet" href="./style/main.css" />
 </head>
 <body>
-  <canvas id="gameCanvas" width="800" height="600"></canvas>
-
-  <div id="hud">
-    <p>Score: <span id="score">0</span></p>
-    <p>Lives: <span id="lives">3</span></p>
+  <!-- Start screen -->
+  <div id="start-screen">
+    <h1>🐺 Egg Catcher</h1>
+    <button id="start-btn">Start Game</button>
   </div>
 
-  <!-- Game Scripts -->
-  <script type="module">
-    import './src/game.js';
-  </script>
+  <!-- Game HUD -->
+  <div id="hud" class="hidden">
+    <span>Score: <span id="score">0</span></span>
+    <span>Lives: <span id="lives">3</span></span>
+  </div>
+
+  <!-- Game canvas -->
+  <canvas id="gameCanvas" class="hidden" width="800" height="600"></canvas>
+
+  <script type="module" src="./src/game.js"></script>
 </body>
 </html>

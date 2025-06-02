@@ -1,41 +1,56 @@
-// Importas bus reikalingas, kai susiesim su game.js
 export class Player {
   constructor(ctx) {
     this.ctx = ctx;
 
-    // 4 galimos pozicijos: 0 (LT), 1 (LB), 2 (RT), 3 (RB)
     this.positions = [
-      { x: 150, y: 200 }, // top-left
-      { x: 150, y: 400 }, // bottom-left
-      { x: 550, y: 200 }, // top-right
-      { x: 550, y: 400 }, // bottom-right
+      { x: 150, y: 200 }, // 0 - top-left
+      { x: 550, y: 200 }, // 1 - top-right
+      { x: 150, y: 400 }, // 2 - bottom-left
+      { x: 550, y: 400 }, // 3 - bottom-right
     ];
 
-    this.currentPos = 0; // Pradžioje viršutinė kairė
-    this.size = 50; // Plotis / aukštis (kvadratas, kaip placeholder)
+    this.row = 0;  // 0 = top, 1 = bottom
+    this.side = 0; // 0 = left, 1 = right
+
+    this.size = 50;
   }
 
-  moveTo(posIndex) {
-    if (posIndex >= 0 && posIndex <= 3) {
-      this.currentPos = posIndex;
-    }
+  get currentPos() {
+    // Viršutinės eilės pozicijos 0 ir 1, apatines 2 ir 3
+    // currentPos = row * 2 + side
+    return this.row * 2 + this.side;
+  }
+
+  moveLeft() {
+    this.side = 0;
+  }
+
+  moveRight() {
+    this.side = 1;
+  }
+
+  moveUp() {
+    this.row = 0;
+  }
+
+  moveDown() {
+    this.row = 1;
   }
 
   handleInput(key) {
-    const keyMap = {
-      'a': 0,
-      's': 1,
-      'k': 2,
-      'l': 3,
-      'arrowup': 0,
-      'arrowdown': 1,
-      'arrowright': 2,
-      'arrowleft': 3,
-    };
-
-    const index = keyMap[key.toLowerCase()];
-    if (index !== undefined) {
-      this.moveTo(index);
+    switch (key.toLowerCase()) {
+      case 'a':
+        this.moveLeft();
+        break;
+      case 'd':
+        this.moveRight();
+        break;
+      case 'w':
+        this.moveUp();
+        break;
+      case 's':
+        this.moveDown();
+        break;
     }
   }
 
@@ -44,9 +59,8 @@ export class Player {
     this.ctx.fillStyle = '#00ccff';
     this.ctx.fillRect(pos.x, pos.y, this.size, this.size);
 
-    // Optional: draw a label
     this.ctx.fillStyle = '#fff';
     this.ctx.font = '16px Arial';
-    this.ctx.fillText('🐺', pos.x + 10, pos.y + 35);
+    this.ctx.fillText('🐺', pos.x + 15, pos.y + 35);
   }
 }

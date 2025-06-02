@@ -1,32 +1,30 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
-  background-color: #1e1e1e;
+  margin: 0;
+  background: #111;
+  color: #fff;
   font-family: Arial, sans-serif;
-  color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  min-height: 100vh;
-  padding-top: 20px;
+  text-align: center;
 }
 
-canvas#gameCanvas {
-  border: 4px solid #ffffff;
+#start-screen {
+  padding-top: 100px;
+}
+
+canvas {
+  display: block;
+  margin: 20px auto;
+  border: 3px solid #fff;
   background-color: #2a2a2a;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
 }
 
-/* Heads-up display (score/lives) */
 #hud {
-  margin-top: 15px;
+  margin-top: 10px;
+  font-size: 20px;
   display: flex;
-  gap: 40px;
-  font-size: 1.2rem;
-  font-weight: bold;
+  justify-content: center;
+  gap: 50px;
+}
+
+.hidden {
+  display: none;
 }
