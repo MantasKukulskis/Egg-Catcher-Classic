@@ -6,7 +6,7 @@
 
 A nostalgic arcade-style game inspired by the classic "Nu, Pogodi!" handheld console. Control the wolf and catch eggs rolling from four conveyor belts before they hit the ground. Fast reflexes and quick decisions are key!
 
-Site published at: https://github.com/YOUR_USERNAME/egg-catcher-classic
+Site published at: https://github.com/MantasKukulskis/Egg-Catcher-Classic
 
 🎯 Project features/goals
 
@@ -41,7 +41,7 @@ Want to try it on your machine? Open your terminal and follow these steps:
     Clone the repo
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/egg-catcher-classic.git
+git https://github.com/MantasKukulskis/Egg-Catcher-Classic.git
 
 Open the project folder and launch the HTML file:
 
@@ -63,7 +63,7 @@ There are no automated tests for this project.
 
 👨‍💻 Authors
 
-YOUR_NAME: https://github.com/YOUR_USERNAME
+Mantas: https://github.com/MantasKukulskis
 
 ⚠️ License
 
