@@ -22,25 +22,25 @@ export class Egg {
     this.targetPosIndex = pathIndex;
   }
 
-  getStartPoint(index) {
-    switch (index) {
-      case 0: return { x: 0, y: 150 };       // kairė - viršutinė trajektorija
-      case 1: return { x: 0, y: 300 };       // kairė - apatinė trajektorija
-      case 2: return { x: 800, y: 150 };     // dešinė - viršutinė trajektorija
-      case 3: return { x: 800, y: 300 };     // dešinė - apatinė trajektorija
-      default: return { x: 0, y: 0 };
-    }
+ getStartPoint(index) {
+  switch (index) {
+    case 0: return { x: 0, y: 150 };       // kairė - viršutinė trajektorija
+    case 1: return { x: 800, y: 150 };     // dešinė - viršutinė trajektorija
+    case 2: return { x: 0, y: 350 };       // kairė - apatinė trajektorija
+    case 3: return { x: 800, y: 350 };     // dešinė - apatinė trajektorija
+    default: return { x: 0, y: 0 };
   }
+}
 
-  getEndPoint(index) {
-    switch (index) {
-      case 0: return { x: 150, y: 200 };     // tikslas: viršus-kairė
-      case 1: return { x: 150, y: 400 };     // tikslas: apačia-kairė
-      case 2: return { x: 550, y: 200 };     // tikslas: viršus-dešinė
-      case 3: return { x: 550, y: 400 };     // tikslas: apačia-dešinė
-      default: return { x: 0, y: 0 };
-    }
+getEndPoint(index) {
+  switch (index) {
+    case 0: return { x: 150, y: 200 };     // top-left
+    case 1: return { x: 550, y: 200 };     // top-right
+    case 2: return { x: 150, y: 400 };     // bottom-left
+    case 3: return { x: 550, y: 400 };     // bottom-right
+    default: return { x: 0, y: 0 };
   }
+}
 
   update() {
     this.x += this.vx;
@@ -56,9 +56,17 @@ export class Egg {
     this.ctx.stroke();
   }
 
-  isOutOfBounds() {
-    const dx = this.x - this.end.x;
-    const dy = this.y - this.end.y;
-    return dx * dx + dy * dy < this.speed * this.speed;
-  }
+  // Naujas metodas: ar pasiekė tikslą ir turi būti pagautas
+isCatchable(playerX, playerY, size) {
+  const dx = this.x - (playerX + size / 2);
+  const dy = this.y - (playerY + size / 2);
+  const distance = Math.sqrt(dx * dx + dy * dy);
+  return distance < this.radius + size / 2 + 10; // leidžiamas atstumas pagauti
+}
+
+ isOutOfBounds() {
+  const dx = this.x - this.end.x;
+  const dy = this.y - this.end.y;
+  return dx * dx + dy * dy < 4; // buvo this.speed * this.speed, bet tai per daug
+}
 }

@@ -48,11 +48,12 @@ function update(deltaTime) {
 
   for (let i = eggs.length - 1; i >= 0; i--) {
     const egg = eggs[i];
+    const playerPos = player.positions[player.currentPos];
 
-    // Caught
+    // Pagavimas
     if (
       egg.targetPosIndex === player.currentPos &&
-      egg.isOutOfBounds()
+      egg.isCatchable(playerPos.x, playerPos.y, player.size)
     ) {
       eggs.splice(i, 1);
       score++;
@@ -60,7 +61,7 @@ function update(deltaTime) {
       continue;
     }
 
-    // Missed (egg falls)
+    // Praleidimas
     if (egg.isOutOfBounds()) {
       eggs.splice(i, 1);
       lives--;
@@ -76,7 +77,7 @@ function update(deltaTime) {
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Background
+  // Foninis atspalvis
   ctx.fillStyle = '#2a2a2a';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -126,7 +127,7 @@ function endGame() {
   });
 }
 
-// Start game
+// Start
 startButton.addEventListener('click', () => {
   startScreen.classList.add('hidden');
   canvas.classList.remove('hidden');
@@ -137,7 +138,7 @@ startButton.addEventListener('click', () => {
   requestAnimationFrame(gameLoop);
 });
 
-// Controls
+// Klaviatūros valdymas
 window.addEventListener('keydown', (e) => {
   if (gameRunning && player) {
     player.handleInput(e.key);

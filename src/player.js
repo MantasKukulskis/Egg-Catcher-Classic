@@ -9,15 +9,15 @@ export class Player {
       { x: 550, y: 400 }, // 3 - bottom-right
     ];
 
-    this.row = 0;  // 0 = top, 1 = bottom
-    this.side = 0; // 0 = left, 1 = right
+    // Pradinė pozicija: viršuje kairėje
+    this.row = 0;  // 0 = viršus, 1 = apačia
+    this.side = 0; // 0 = kairė, 1 = dešinė
 
     this.size = 50;
   }
 
   get currentPos() {
-    // Viršutinės eilės pozicijos 0 ir 1, apatines 2 ir 3
-    // currentPos = row * 2 + side
+    // Grąžina indekso poziciją masyve pagal eilutę ir pusę
     return this.row * 2 + this.side;
   }
 
