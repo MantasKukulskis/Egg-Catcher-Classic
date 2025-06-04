@@ -10,34 +10,31 @@ export class Egg {
     this.y = this.start.y;
 
     this.speed = 2;
-    this.radius = 12;
+    this.radius = 8;
 
-    // Skaičiuoti judėjimo kryptį
     const dx = this.end.x - this.start.x;
     const dy = this.end.y - this.start.y;
     const length = Math.sqrt(dx * dx + dy * dy);
     this.vx = (dx / length) * this.speed;
     this.vy = (dy / length) * this.speed;
-
-    this.targetPosIndex = pathIndex;
   }
 
- getStartPoint(index) {
+  getStartPoint(index) {
   switch (index) {
-    case 0: return { x: 0, y: 150 };       // kairė - viršutinė trajektorija
-    case 1: return { x: 800, y: 150 };     // dešinė - viršutinė trajektorija
-    case 2: return { x: 0, y: 350 };       // kairė - apatinė trajektorija
-    case 3: return { x: 800, y: 350 };     // dešinė - apatinė trajektorija
+    case 0: return { x: 20, y: 150 };    // kairė viršutinė - startas kairėje viršuje
+    case 1: return { x: 650, y: 150 };   // dešinė viršutinė - startas dešinėje viršuje (atidėtas toliau nuo sienos)
+    case 2: return { x: 20, y: 350 };    // kairė apatinė - startas kairėje apačioje
+    case 3: return { x: 650, y: 350 };   // dešinė apatinė - startas dešinėje apačioje (atidėtas toliau nuo sienos)
     default: return { x: 0, y: 0 };
   }
 }
 
 getEndPoint(index) {
   switch (index) {
-    case 0: return { x: 150, y: 200 };     // top-left
-    case 1: return { x: 550, y: 200 };     // top-right
-    case 2: return { x: 150, y: 400 };     // bottom-left
-    case 3: return { x: 550, y: 400 };     // bottom-right
+    case 0: return { x: 170, y: 200 };   // viršutinė kairė - pabaiga viduryje (kur vilkas)
+    case 1: return { x: 400, y: 200 };   // viršutinė dešinė - pabaiga viduryje (kur vilkas)
+    case 2: return { x: 170, y: 400 };   // apatinė kairė - pabaiga viduryje (kur vilkas)
+    case 3: return { x: 400, y: 400 };   // apatinė dešinė - pabaiga viduryje (kur vilkas)
     default: return { x: 0, y: 0 };
   }
 }
@@ -49,6 +46,13 @@ getEndPoint(index) {
 
   draw() {
     this.ctx.beginPath();
+    this.ctx.moveTo(this.start.x, this.start.y);
+    this.ctx.lineTo(this.x, this.y);
+    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+    this.ctx.lineWidth = 3;
+    this.ctx.stroke();
+
+    this.ctx.beginPath();
     this.ctx.fillStyle = '#fffacd';
     this.ctx.ellipse(this.x, this.y, this.radius, this.radius * 1.3, 0, 0, Math.PI * 2);
     this.ctx.fill();
@@ -56,17 +60,16 @@ getEndPoint(index) {
     this.ctx.stroke();
   }
 
-  // Naujas metodas: ar pasiekė tikslą ir turi būti pagautas
-isCatchable(playerX, playerY, size) {
-  const dx = this.x - (playerX + size / 2);
-  const dy = this.y - (playerY + size / 2);
-  const distance = Math.sqrt(dx * dx + dy * dy);
-  return distance < this.radius + size / 2 + 10; // leidžiamas atstumas pagauti
-}
+  isCatchable(playerX, playerY, size) {
+    const dx = this.x - playerX;
+    const dy = this.y - playerY;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    return distance < this.radius + size / 2 + 2;
+  }
 
- isOutOfBounds() {
-  const dx = this.x - this.end.x;
-  const dy = this.y - this.end.y;
-  return dx * dx + dy * dy < 4; // buvo this.speed * this.speed, bet tai per daug
-}
+  isOutOfBounds() {
+    const dx = this.x - this.end.x;
+    const dy = this.y - this.end.y;
+    return dx * dx + dy * dy < 4;
+  }
 }

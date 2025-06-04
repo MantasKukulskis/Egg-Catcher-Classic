@@ -4,20 +4,25 @@ export class Player {
 
     this.positions = [
       { x: 150, y: 200 }, // 0 - top-left
-      { x: 550, y: 200 }, // 1 - top-right
+      { x: 400, y: 200 }, // 1 - top-right
       { x: 150, y: 400 }, // 2 - bottom-left
-      { x: 550, y: 400 }, // 3 - bottom-right
+      { x: 400, y: 400 }, // 3 - bottom-right
     ];
 
-    // Pradinė pozicija: viršuje kairėje
-    this.row = 0;  // 0 = viršus, 1 = apačia
-    this.side = 0; // 0 = kairė, 1 = dešinė
+    this.row = 0;
+    this.side = 0;
 
-    this.size = 50;
+    this.size = 150; // padidink, jei paveikslėlis didesnis
+
+    // Įkeliam paveikslėlius
+    this.wolfLeft = new Image();
+    this.wolfLeft.src = 'assets/images/wolf1.png';
+
+    this.wolfRight = new Image();
+    this.wolfRight.src = 'assets/images/wolf2.png';
   }
 
   get currentPos() {
-    // Grąžina indekso poziciją masyve pagal eilutę ir pusę
     return this.row * 2 + this.side;
   }
 
@@ -56,11 +61,9 @@ export class Player {
 
   draw() {
     const pos = this.positions[this.currentPos];
-    this.ctx.fillStyle = '#00ccff';
-    this.ctx.fillRect(pos.x, pos.y, this.size, this.size);
+    const img = this.side === 0 ? this.wolfLeft : this.wolfRight;
 
-    this.ctx.fillStyle = '#fff';
-    this.ctx.font = '16px Arial';
-    this.ctx.fillText('🐺', pos.x + 15, pos.y + 35);
+    // Piešiam paveikslėlį
+    this.ctx.drawImage(img, pos.x, pos.y, this.size, this.size);
   }
 }

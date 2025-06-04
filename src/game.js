@@ -1,5 +1,6 @@
 import { Player } from './player.js';
 import { Egg } from './egg.js';
+import { Chicken } from './chicken.js';
 
 const startScreen = document.getElementById('start-screen');
 const startButton = document.getElementById('start-btn');
@@ -12,56 +13,41 @@ const livesEl = document.getElementById('lives');
 const gameOverScreen = document.createElement('div');
 
 let player;
+let chicken;
 let eggs = [];
 let score = 0;
 let lives = 3;
 let lastTime = 0;
 let gameRunning = false;
 
-let eggSpawnTimer = 0;
-const eggSpawnInterval = 1500;
-
 function resetGame() {
   score = 0;
   lives = 3;
   lastTime = 0;
-  eggSpawnTimer = 0;
   eggs = [];
   player = new Player(ctx);
+  chicken = new Chicken(ctx, eggs);
+
   updateScoreDisplay();
   updateLivesDisplay();
 }
 
-function spawnEgg() {
-  const randomPos = Math.floor(Math.random() * 4);
-  eggs.push(new Egg(ctx, randomPos));
-}
-
 function update(deltaTime) {
-  eggSpawnTimer += deltaTime;
-  if (eggSpawnTimer >= eggSpawnInterval) {
-    spawnEgg();
-    eggSpawnTimer = 0;
-  }
+  chicken.update(deltaTime);
 
-  eggs.forEach((egg) => egg.update());
+  eggs.forEach(egg => egg.update());
 
   for (let i = eggs.length - 1; i >= 0; i--) {
     const egg = eggs[i];
     const playerPos = player.positions[player.currentPos];
 
-    // Pagavimas
-    if (
-      egg.targetPosIndex === player.currentPos &&
-      egg.isCatchable(playerPos.x, playerPos.y, player.size)
-    ) {
+    if (egg.isCatchable(playerPos.x, playerPos.y, player.size) && egg.pathIndex === player.currentPos) {
       eggs.splice(i, 1);
       score++;
       updateScoreDisplay();
       continue;
     }
 
-    // Praleidimas
     if (egg.isOutOfBounds()) {
       eggs.splice(i, 1);
       lives--;
@@ -77,12 +63,12 @@ function update(deltaTime) {
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Foninis atspalvis
   ctx.fillStyle = '#2a2a2a';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+  chicken.draw();
   player.draw();
-  eggs.forEach((egg) => egg.draw());
+  eggs.forEach(egg => egg.draw());
 }
 
 function gameLoop(timestamp) {
@@ -127,7 +113,6 @@ function endGame() {
   });
 }
 
-// Start
 startButton.addEventListener('click', () => {
   startScreen.classList.add('hidden');
   canvas.classList.remove('hidden');
@@ -138,7 +123,6 @@ startButton.addEventListener('click', () => {
   requestAnimationFrame(gameLoop);
 });
 
-// Klaviatūros valdymas
 window.addEventListener('keydown', (e) => {
   if (gameRunning && player) {
     player.handleInput(e.key);
