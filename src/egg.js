@@ -3,8 +3,24 @@ export class Egg {
     this.ctx = ctx;
     this.pathIndex = pathIndex;
 
-    this.start = this.getStartPoint(pathIndex);
-    this.end = this.getEndPoint(pathIndex);
+    const chickenSize = 50;
+
+    const starts = [
+      { x: 10 + chickenSize / 2, y: 130 + chickenSize },         // top-left
+      { x: 600 + chickenSize / 2, y: 130 + chickenSize },        // top-right
+      { x: 10 + chickenSize / 2, y: 330 + chickenSize + 5 },     // bottom-left
+      { x: 600 + chickenSize / 2, y: 330 + chickenSize + 5 }     // bottom-right
+    ];
+
+    const ends = [
+      { x: 170 + 25, y: 200 + 25 },  // top-left vilkas
+      { x: 420 + 25, y: 200 + 25 },  // top-right vilkas
+      { x: 170 + 25, y: 400 + 25 },  // bottom-left vilkas
+      { x: 420 + 25, y: 400 + 25 }   // bottom-right vilkas
+    ];
+
+    this.start = starts[pathIndex];
+    this.end = ends[pathIndex];
 
     this.x = this.start.x;
     this.y = this.start.y;
@@ -19,40 +35,12 @@ export class Egg {
     this.vy = (dy / length) * this.speed;
   }
 
-getStartPoint(index) {
-  const chickenSize = 50;
-  switch (index) {
-    case 0: return { x: 20 + chickenSize / 2, y: 130 + chickenSize };     // top-left
-    case 1: return { x: 650 + chickenSize / 2, y: 130 + chickenSize };    // top-right
-    case 2: return { x: 20 + chickenSize / 2, y: 330 };                    // bottom-left
-    case 3: return { x: 650 + chickenSize / 2, y: 330 };                   // bottom-right
-    default: return { x: 0, y: 0 };
-  }
-}
-
-getEndPoint(index) {
-  switch (index) {
-    case 0: return { x: 150, y: 200 };  // top-left vilkas
-    case 1: return { x: 400, y: 200 };  // top-right vilkas
-    case 2: return { x: 150, y: 400 };  // bottom-left vilkas
-    case 3: return { x: 400, y: 400 };  // bottom-right vilkas
-    default: return { x: 0, y: 0 };
-  }
-}
-
   update() {
     this.x += this.vx;
     this.y += this.vy;
   }
 
   draw() {
-    this.ctx.beginPath();
-    this.ctx.moveTo(this.start.x, this.start.y);
-    this.ctx.lineTo(this.x, this.y);
-    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-    this.ctx.lineWidth = 3;
-    this.ctx.stroke();
-
     this.ctx.beginPath();
     this.ctx.fillStyle = '#fffacd';
     this.ctx.ellipse(this.x, this.y, this.radius, this.radius * 1.3, 0, 0, Math.PI * 2);

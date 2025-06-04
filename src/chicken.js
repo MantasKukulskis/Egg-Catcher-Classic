@@ -25,15 +25,13 @@ export class Chicken {
 
     this.imgLeft.onload = () => { 
       this.imagesLoaded.left = true;
-      console.log('Left chicken image loaded');
     };
     this.imgRight.onload = () => { 
       this.imagesLoaded.right = true;
-      console.log('Right chicken image loaded');
     };
 
     this.spawnTimer = 0;
-    this.spawnInterval = 2000; // kiaušinis kas 2 sekundes
+    this.spawnInterval = 2000;
   }
 
   update(deltaTime) {
@@ -48,12 +46,10 @@ export class Chicken {
   draw() {
     const size = 50;
     if (!this.imagesLoaded.left || !this.imagesLoaded.right) {
-      console.log('Waiting for chicken images to load...');
       return;
     }
 
     this.positions.forEach(pos => {
-      console.log(`Drawing chicken at (${pos.x}, ${pos.y}) facing ${pos.direction}`);
       if (pos.direction === 'left') {
         this.ctx.drawImage(this.imgLeft, pos.x, pos.y, size, size);
       } else {
@@ -61,31 +57,26 @@ export class Chicken {
       }
     });
 
-    // Piešiame trajektorijas
     this.ctx.strokeStyle = '#FFD700';
     this.ctx.lineWidth = 4;
 
-    // Viršutinė kairė trajektorija
     this.ctx.beginPath();
     this.ctx.moveTo(this.positions[0].x + size / 2, this.positions[0].y + size);
     this.ctx.lineTo(170 + 25, 200 + 25);
     this.ctx.stroke();
 
-    // Viršutinė dešinė trajektorija
     this.ctx.beginPath();
     this.ctx.moveTo(this.positions[1].x + size / 2, this.positions[1].y + size);
     this.ctx.lineTo(520 + 25, 200 + 25);
     this.ctx.stroke();
 
-    // Apatinė kairė trajektorija
     this.ctx.beginPath();
-    this.ctx.moveTo(this.positions[2].x + size / 2, this.positions[2].y);
+    this.ctx.moveTo(this.positions[2].x + size / 2, this.positions[2].y + size + 5);
     this.ctx.lineTo(170 + 25, 400 + 25);
     this.ctx.stroke();
 
-    // Apatinė dešinė trajektorija
     this.ctx.beginPath();
-    this.ctx.moveTo(this.positions[3].x + size / 2, this.positions[3].y);
+    this.ctx.moveTo(this.positions[3].x + size / 2, this.positions[3].y + size + 5);
     this.ctx.lineTo(520 + 25, 400 + 25);
     this.ctx.stroke();
   }

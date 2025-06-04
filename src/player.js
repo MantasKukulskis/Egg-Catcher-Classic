@@ -2,19 +2,19 @@ export class Player {
   constructor(ctx) {
     this.ctx = ctx;
 
+    // Pakeičiau pozicijas, kad vilkas stovėtų žemiau pagal geltonų linijų pabaigas
     this.positions = [
-      { x: 150, y: 200 }, // 0 - top-left
-      { x: 400, y: 200 }, // 1 - top-right
-      { x: 150, y: 400 }, // 2 - bottom-left
-      { x: 400, y: 400 }, // 3 - bottom-right
+      { x: 170, y: 200 },  // top-left (suderinta su trajektorijos tašku)
+      { x: 420, y: 200 },  // top-right
+      { x: 170, y: 400 },  // bottom-left
+      { x: 420, y: 400 },  // bottom-right
     ];
 
     this.row = 0;
     this.side = 0;
 
-    this.size = 150; // padidink, jei paveikslėlis didesnis
+    this.size = 150;
 
-    // Įkeliam paveikslėlius
     this.wolfLeft = new Image();
     this.wolfLeft.src = 'assets/images/wolf1.png';
 
@@ -62,8 +62,6 @@ export class Player {
   draw() {
     const pos = this.positions[this.currentPos];
     const img = this.side === 0 ? this.wolfLeft : this.wolfRight;
-
-    // Piešiam paveikslėlį
     this.ctx.drawImage(img, pos.x, pos.y, this.size, this.size);
   }
 }
