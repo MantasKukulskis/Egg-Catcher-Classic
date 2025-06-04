@@ -7,9 +7,9 @@ export class Chicken {
 
     this.positions = [
       { x: 20, y: 130, direction: 'right' },
-      { x: 650, y: 130, direction: 'left' },
+      { x: 730, y: 130, direction: 'left' },
       { x: 20, y: 330, direction: 'right' },
-      { x: 650, y: 330, direction: 'left' }
+      { x: 730, y: 330, direction: 'left' }
     ];
 
     this.imgLeft = new Image();
@@ -59,10 +59,6 @@ export class Chicken {
       } else {
         this.ctx.drawImage(this.imgRight, pos.x, pos.y, size, size);
       }
-
-      // Kontrolinis raudonas kvadratėlis po viščiuku, padeda vizualizuoti vietą
-      this.ctx.fillStyle = 'red';
-      this.ctx.fillRect(pos.x, pos.y + size + 5, 10, 10);
     });
 
     // Piešiame trajektorijas

@@ -9,7 +9,7 @@ export class Egg {
     this.x = this.start.x;
     this.y = this.start.y;
 
-    this.speed = 2;
+    this.speed = (pathIndex === 0 || pathIndex === 2) ? 1.5 : 2;
     this.radius = 8;
 
     const dx = this.end.x - this.start.x;
@@ -19,22 +19,23 @@ export class Egg {
     this.vy = (dy / length) * this.speed;
   }
 
-  getStartPoint(index) {
+getStartPoint(index) {
+  const chickenSize = 50;
   switch (index) {
-    case 0: return { x: 20, y: 150 };    // kairė viršutinė - startas kairėje viršuje
-    case 1: return { x: 650, y: 150 };   // dešinė viršutinė - startas dešinėje viršuje (atidėtas toliau nuo sienos)
-    case 2: return { x: 20, y: 350 };    // kairė apatinė - startas kairėje apačioje
-    case 3: return { x: 650, y: 350 };   // dešinė apatinė - startas dešinėje apačioje (atidėtas toliau nuo sienos)
+    case 0: return { x: 20 + chickenSize / 2, y: 130 + chickenSize };     // top-left
+    case 1: return { x: 650 + chickenSize / 2, y: 130 + chickenSize };    // top-right
+    case 2: return { x: 20 + chickenSize / 2, y: 330 };                    // bottom-left
+    case 3: return { x: 650 + chickenSize / 2, y: 330 };                   // bottom-right
     default: return { x: 0, y: 0 };
   }
 }
 
 getEndPoint(index) {
   switch (index) {
-    case 0: return { x: 170, y: 200 };   // viršutinė kairė - pabaiga viduryje (kur vilkas)
-    case 1: return { x: 400, y: 200 };   // viršutinė dešinė - pabaiga viduryje (kur vilkas)
-    case 2: return { x: 170, y: 400 };   // apatinė kairė - pabaiga viduryje (kur vilkas)
-    case 3: return { x: 400, y: 400 };   // apatinė dešinė - pabaiga viduryje (kur vilkas)
+    case 0: return { x: 150, y: 200 };  // top-left vilkas
+    case 1: return { x: 400, y: 200 };  // top-right vilkas
+    case 2: return { x: 150, y: 400 };  // bottom-left vilkas
+    case 3: return { x: 400, y: 400 };  // bottom-right vilkas
     default: return { x: 0, y: 0 };
   }
 }
