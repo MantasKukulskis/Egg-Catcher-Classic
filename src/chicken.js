@@ -13,10 +13,10 @@ export class Chicken {
     ];
 
     this.imgLeft = new Image();
-    this.imgLeft.src = 'assets/images/chicken1.webp';
+    this.imgLeft.src = 'assets/images/chicken1.png';
 
     this.imgRight = new Image();
-    this.imgRight.src = 'assets/images/chicken2.webp';
+    this.imgRight.src = 'assets/images/chicken2.png';
 
     this.imagesLoaded = {
       left: false,
