@@ -32,14 +32,33 @@ export class Chicken {
 
     this.spawnTimer = 0;
     this.spawnInterval = 2000;
+    this.level = 1;
+  }
+
+  increaseSpeed(amount) {
+    this.spawnInterval = Math.max(500, this.spawnInterval - amount * 100);
+  }
+
+  setLevel(level) {
+    this.level = level;
   }
 
   update(deltaTime) {
     this.spawnTimer += deltaTime;
+
     if (this.spawnTimer >= this.spawnInterval) {
-      const pathIndex = Math.floor(Math.random() * this.positions.length);
-      this.eggs.push(new Egg(this.ctx, pathIndex));
       this.spawnTimer = 0;
+
+      const maxEggs = Math.min(this.level, 3);  // 1–3 kiaušiniai
+      const count = Math.floor(Math.random() * maxEggs) + 1;
+
+      const availablePaths = [0, 1, 2, 3].sort(() => 0.5 - Math.random()).slice(0, count);
+
+      availablePaths.forEach((pathIndex, i) => {
+        setTimeout(() => {
+          this.eggs.push(new Egg(this.ctx, pathIndex));
+        }, i * 300); // 300 ms tarpai tarp kiaušinių
+      });
     }
   }
 
@@ -50,16 +69,14 @@ export class Chicken {
     }
 
     this.positions.forEach(pos => {
-      if (pos.direction === 'left') {
-        this.ctx.drawImage(this.imgLeft, pos.x, pos.y, size, size);
-      } else {
-        this.ctx.drawImage(this.imgRight, pos.x, pos.y, size, size);
-      }
+      const img = pos.direction === 'left' ? this.imgLeft : this.imgRight;
+      this.ctx.drawImage(img, pos.x, pos.y, size, size);
     });
 
     this.ctx.strokeStyle = '#FFD700';
     this.ctx.lineWidth = 4;
 
+    // linijos nuo viščiukų iki žaidėjo
     this.ctx.beginPath();
     this.ctx.moveTo(this.positions[0].x + size / 2, this.positions[0].y + size);
     this.ctx.lineTo(170 + 25, 200 + 25);

@@ -2,12 +2,12 @@ export class Player {
   constructor(ctx) {
     this.ctx = ctx;
 
-    // Pakeičiau pozicijas, kad vilkas stovėtų žemiau pagal geltonų linijų pabaigas
+    
     this.positions = [
-      { x: 170, y: 200 },  // top-left (suderinta su trajektorijos tašku)
-      { x: 420, y: 200 },  // top-right
-      { x: 170, y: 400 },  // bottom-left
-      { x: 420, y: 400 },  // bottom-right
+      { x: 170, y: 200 },  
+      { x: 420, y: 200 },  
+      { x: 170, y: 400 },  
+      { x: 420, y: 400 },  
     ];
 
     this.row = 0;

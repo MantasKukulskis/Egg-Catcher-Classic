@@ -16,8 +16,12 @@ let player, chicken;
 let eggs        = [];
 let score       = 0;
 let lives       = 3;
+let level       = 1;
 let lastTime    = 0;
 let gameRunning = false;
+let levelUpText = '';
+let levelUpTimer = 0;
+
 
 const bgImage   = new Image();
 bgImage.src     = 'assets/images/farm.jpg';
@@ -25,9 +29,17 @@ bgImage.src     = 'assets/images/farm.jpg';
 const ladderImg = new Image();
 ladderImg.src   = 'assets/images/ladder.png';
 
+
+const rollingSound = new Audio('assets/sounds/rolling.wav');
+const catchSound   = new Audio('assets/sounds/pick-up.wav');
+const crackSound   = new Audio('assets/sounds/glass.mp3');
+rollingSound.loop = true;
+
+
 function resetGame() {
   score   = 0;
   lives   = 3;
+  level   = 1;
   lastTime = 0;
   eggs    = [];
 
@@ -36,7 +48,21 @@ function resetGame() {
 
   updateScoreDisplay();
   updateLivesDisplay();
+  rollingSound.play();
 }
+
+
+function checkLevelUp() {
+  const newLevel = Math.floor(score / 20) + 1;
+  if (newLevel > level) {
+    level = newLevel;
+    chicken.increaseSpeed(0.2);
+    chicken.setLevel(level); 
+    levelUpText = `Lygis ${level}!`;
+    levelUpTimer = 100;
+  }
+}
+
 
 function update(deltaTime) {
   chicken.update(deltaTime);
@@ -51,6 +77,9 @@ function update(deltaTime) {
         eggs.splice(i, 1);
         score++;
         updateScoreDisplay();
+        catchSound.currentTime = 0;
+        catchSound.play();
+        checkLevelUp();
         continue;
       }
 
@@ -59,6 +88,9 @@ function update(deltaTime) {
         egg.break();
         lives--;
         updateLivesDisplay();
+        crackSound.currentTime = 0;
+        crackSound.play();
+
         if (lives <= 0) {
           endGame();
           return;
@@ -70,7 +102,12 @@ function update(deltaTime) {
       }
     }
   }
+
+  if (levelUpTimer > 0) {
+    levelUpTimer--;
+  }
 }
+
 
 function drawBackground() {
   if (bgImage.complete && bgImage.naturalHeight) {
@@ -87,7 +124,6 @@ function drawLadders() {
   const width  = 90;
   const height = 250;
   const yOff   = 245;
-
   const leftX  = 230 + 25;
   const rightX = 450 + 25;
 
@@ -95,13 +131,22 @@ function drawLadders() {
   ctx.drawImage(ladderImg, rightX - width / 2, yOff, width, height);
 }
 
+function drawLevelText() {
+  if (levelUpTimer > 0) {
+    ctx.fillStyle = 'yellow';
+    ctx.font = '36px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(levelUpText, canvas.width / 2, 100);
+  }
+}
+
 function draw() {
   drawBackground();
   drawLadders();
-
   chicken.draw();
   player.draw();
   eggs.forEach(e => e.draw());
+  drawLevelText();
 }
 
 function gameLoop(ts) {
@@ -114,6 +159,7 @@ function gameLoop(ts) {
   requestAnimationFrame(gameLoop);
 }
 
+
 function updateScoreDisplay() {
   if (scoreEl) scoreEl.textContent = score;
 }
@@ -121,8 +167,12 @@ function updateLivesDisplay() {
   if (livesEl) livesEl.textContent = lives;
 }
 
+
 function endGame() {
   gameRunning = false;
+  rollingSound.pause();
+  rollingSound.currentTime = 0;
+
   gameOverScreen.innerHTML = `
     <div id="game-over">
       <h2>Game Over</h2>
@@ -131,6 +181,7 @@ function endGame() {
     </div>`;
   document.body.appendChild(gameOverScreen);
   gameOverScreen.classList.add('overlay');
+
   document.getElementById('restart-btn').onclick = () => {
     document.body.removeChild(gameOverScreen);
     resetGame();
@@ -139,10 +190,12 @@ function endGame() {
   };
 }
 
+
 startButton.onclick = () => {
   startScreen.classList.add('hidden');
   canvas.classList.remove('hidden');
   hud.classList.remove('hidden');
+
   resetGame();
   gameRunning = true;
   requestAnimationFrame(gameLoop);

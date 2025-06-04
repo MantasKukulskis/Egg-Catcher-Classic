@@ -6,20 +6,20 @@ export class Egg {
     const chickenSize = 50;
 
     this.starts = [
-      { x: 10 + chickenSize / 2, y: 130 + chickenSize },         // top-left
-      { x: 600 + chickenSize / 2, y: 130 + chickenSize },        // top-right
-      { x: 10 + chickenSize / 2, y: 330 + chickenSize + 5 },     // bottom-left
-      { x: 600 + chickenSize / 2, y: 330 + chickenSize + 5 }     // bottom-right
+      { x: 10 + chickenSize / 2, y: 130 + chickenSize },        
+      { x: 600 + chickenSize / 2, y: 130 + chickenSize },       
+      { x: 10 + chickenSize / 2, y: 330 + chickenSize + 5 },    
+      { x: 600 + chickenSize / 2, y: 330 + chickenSize + 5 }     
     ];
 
     this.ends = [
-      { x: 170 + 25, y: 200 + 25 },  // top-left vilkas
-      { x: 420 + 25, y: 200 + 25 },  // top-right vilkas
-      { x: 170 + 25, y: 400 + 25 },  // bottom-left vilkas
-      { x: 420 + 25, y: 400 + 25 }   // bottom-right vilkas
+      { x: 170 + 25, y: 200 + 25 },  
+      { x: 420 + 25, y: 200 + 25 }, 
+      { x: 170 + 25, y: 400 + 25 },  
+      { x: 420 + 25, y: 400 + 25 }   
     ];
 
-    this.brokenPosY = 530; // Žemės aukštis (pritaikyk pagal savo žaidimą)
+    this.brokenPosY = 530; 
 
     this.start = this.starts[pathIndex];
     this.end = this.ends[pathIndex];
@@ -36,14 +36,14 @@ export class Egg {
     this.vx = (dx / length) * this.speed;
     this.vy = (dy / length) * this.speed;
 
-    this.state = 'normal';  // normal | broken
+    this.state = 'normal';
     this.brokenTimer = 0;
-    this.brokenDuration = 2000; // kiek laiko rodyti sudužusį (ms)
+    this.brokenDuration = 2000; 
 
     this.brokenImage = new Image();
     this.brokenImage.src = 'assets/images/egg.png';
 
-    this.brokenSize = 50;  // didesnis nei normalus kiaušinis
+    this.brokenSize = 50; 
   }
 
   update(deltaTime) {
@@ -52,9 +52,9 @@ export class Egg {
       this.y += this.vy;
     } else if (this.state === 'broken') {
       this.brokenTimer += deltaTime;
-      // Animuoti kiaušinio kritimą žemyn (jei norima)
+      
       if (this.y < this.brokenPosY) {
-        this.y += 3;  // greitis kaip krenta sudužęs kiaušinis, reguliuok kaip nori
+        this.y += 3;  
         if (this.y > this.brokenPosY) this.y = this.brokenPosY;
       }
     }
@@ -69,7 +69,7 @@ export class Egg {
       this.ctx.strokeStyle = '#ccc';
       this.ctx.stroke();
     } else if (this.state === 'broken') {
-      // Piešiam didesnį sudužusį kiaušinį
+    
       if (this.brokenImage.complete && this.brokenImage.naturalHeight !== 0) {
         this.ctx.drawImage(
           this.brokenImage,
@@ -79,7 +79,7 @@ export class Egg {
           this.brokenSize
         );
       } else {
-        // jei paveikslėlis dar neužkrautas - rodome tiesiog apvalų raudoną plotelį
+        
         this.ctx.beginPath();
         this.ctx.fillStyle = 'red';
         this.ctx.arc(this.x, this.y, this.brokenSize / 2, 0, Math.PI * 2);
@@ -89,7 +89,7 @@ export class Egg {
   }
 
   isCatchable(playerX, playerY, size) {
-    if (this.state !== 'normal') return false; // sugauti galima tik normalų
+    if (this.state !== 'normal') return false; 
     const dx = this.x - playerX;
     const dy = this.y - playerY;
     const distance = Math.sqrt(dx * dx + dy * dy);
@@ -108,6 +108,5 @@ export class Egg {
     this.brokenTimer = 0;
     this.vx = 0;
     this.vy = 0;
-    // Tiesiog pradedame animuoti kritimą į žemę žemiau (nustatyta brokenPosY)
   }
 }
